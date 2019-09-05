@@ -1,0 +1,19 @@
+# api specific parameters
+parameters:
+    notificaciones:
+        host: '%snc_api_notificaciones_url%'
+        user: '%snc_api_notificaciones_user%'
+        pass: '%snc_api_notificaciones_pass%'
+        token: '%snc_api_notificaciones_token%'
+        from: '%snc_api_notificaciones_email%'
+        subject: '%snc_api_notificaciones_subject%'
+        templates:
+            usuario: 'snt-usuarios-sistematurnos'
+            password: 'snt-recuperar-password-sistematurnos'
+            usuariold: 'snt-recuperar-password-old-sistematurnos'
+        urls:
+            auth: '/api-auth/token'
+            templates: '/templates'
+            template_test: '/templates/%s/preview'
+            notifications: '/notifications'
+            

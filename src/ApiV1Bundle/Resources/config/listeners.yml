@@ -1,0 +1,10 @@
+parameters:
+    snc.header.listener.class: ApiV1Bundle\EventListener\HeadersListener
+
+services:
+    snc.headers.action_listeners:
+        class: '%snc.header.listener.class%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+        arguments: ['@snc.services.security', '%secureroutes%', '@kernel']

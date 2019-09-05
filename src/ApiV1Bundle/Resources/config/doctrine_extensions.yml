@@ -1,0 +1,15 @@
+## Doctrine extensions
+services:
+    doctrine.extension.listener:
+        class: ApiV1Bundle\EventListener\DoctrineExtensionListener
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    gedmo.listener.softdeleteable:
+        class: Gedmo\SoftDeleteable\SoftDeleteableListener
+        calls:
+            - [setAnnotationReader, ['@annotation_reader']]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

@@ -1,0 +1,5 @@
+# api specific parameters
+parameters:
+    api_prod_name: 'Sistema Nacional de Filas'
+    api_name: 'afi'
+    api_version: 0.3.0

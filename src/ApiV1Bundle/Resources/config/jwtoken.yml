@@ -1,0 +1,3 @@
+# jwtoken config
+parameters:
+    jwt_domain: 'http://snt.argentina.gob.ar'

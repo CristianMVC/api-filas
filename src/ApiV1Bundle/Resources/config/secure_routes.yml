@@ -1,0 +1,29 @@
+parameters:
+    secureroutes:
+        '/api/v1.0/auth/test':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['POST', 'PUT', 'DELETE']
+        '/api/v1.0/agentes':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']
+        '/api/v1.0/colas':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET']
+        '/api/v1.0/snt/turnos':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']
+        '/api/v1.0/turnos':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']
+        '/api/v1.0/usuarios':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']
+        '/api/v1.0/ventanillas':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION', 'ROL_AGENTE']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']
+        '/api/v1.0/puntoatencion':
+            roles: ['ROL_ADMIN', 'ROL_ORGANISMO', 'ROL_AREA', 'ROL_PUNTOATENCION']
+            metodos: ['GET']
+        '/api/v1.0/carteleras':
+            roles: ['ROL_PUNTOATENCION']
+            metodos: ['GET', 'POST', 'PUT', 'DELETE']

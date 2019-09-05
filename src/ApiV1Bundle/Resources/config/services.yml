@@ -1,0 +1,259 @@
+parameters:
+
+    # Services
+    snc.services.general.class: ApiV1Bundle\ApplicationServices\SNCServices
+    snc.services.security.class: ApiV1Bundle\ApplicationServices\SecurityServices
+    snc.services.agente.class: ApiV1Bundle\ApplicationServices\AgenteServices
+    snc.services.ventanilla.class: ApiV1Bundle\ApplicationServices\VentanillaServices
+    snc.services.usuario.class: ApiV1Bundle\ApplicationServices\UsuarioServices
+    snc.services.cola.class: ApiV1Bundle\ApplicationServices\ColaServices
+    snc.services.puntoatencion.class: ApiV1Bundle\ApplicationServices\PuntoAtencionServices
+    snc.services.turno.class: ApiV1Bundle\ApplicationServices\TurnoServices
+    snc.services.redis.class: ApiV1Bundle\ApplicationServices\RedisServices
+    snc.services.roles.class: ApiV1Bundle\ApplicationServices\RolesServices
+    snc.services.cartelera.class: ApiV1Bundle\ApplicationServices\CarteleraServices
+
+    # Repository    
+    snc.repository.user.class: ApiV1Bundle\Repository\UserRepository
+    snc.repository.agente.class: ApiV1Bundle\Repository\AgenteRepository
+    snc.repository.responsable.class: ApiV1Bundle\Repository\ResponsableRepository
+    snc.repository.admin.class: ApiV1Bundle\Repository\AdminRepository
+    snc.repository.ventanilla.class: ApiV1Bundle\Repository\VentanillaRepository
+    snc.repository.cola.class: ApiV1Bundle\Repository\ColaRepository
+    snc.repository.usuario.class: ApiV1Bundle\Repository\UsuarioRepository
+    snc.repository.puntoatencion.class: ApiV1Bundle\Repository\PuntoAtencionRepository
+    snc.repository.turno.class: ApiV1Bundle\Repository\TurnoRepository
+    snc.repository.token.class: ApiV1Bundle\Repository\TokenRepository
+    snc.repository.cartelera.class: ApiV1Bundle\Repository\CarteleraRepository
+
+    # Validators
+    snc.validator.agente.class: ApiV1Bundle\Entity\Validator\AgenteValidator
+    snc.validator.user.class: ApiV1Bundle\Entity\Validator\UserValidator
+    snc.validator.ventanilla.class: ApiV1Bundle\Entity\Validator\VentanillaValidator
+    snc.validator.admin.class: ApiV1Bundle\Entity\Validator\AdminValidator
+    snc.validator.responsable.class: ApiV1Bundle\Entity\Validator\ResponsableValidator
+    snc.validator.cola.class: ApiV1Bundle\Entity\Validator\ColaValidator
+    snc.validator.turno.class: ApiV1Bundle\Entity\Validator\TurnoValidator
+    snc.validator.puntoatencion.class: ApiV1Bundle\Entity\Validator\PuntoAtencionValidator
+    snc.validator.communication.class: ApiV1Bundle\Entity\Validator\CommunicationValidator
+    snc.validator.token.class: ApiV1Bundle\Entity\Validator\TokenValidator
+    snc.validator.cartelera.class: ApiV1Bundle\Entity\Validator\CarteleraValidator
+    
+    # Security
+    snc.helper.jwtoken.class: ApiV1Bundle\Helper\JWToken
+    snc.security.builder.class: Lcobucci\JWT\Builder
+    snc.security.parser.class: Lcobucci\JWT\Parser
+    snc.security.validation.class: Lcobucci\JWT\ValidationData
+    snc.security.integration.class: ApiV1Bundle\ExternalServices\SecurityIntegration
+
+    ## External services
+    snt.services.integration.class: ApiV1Bundle\ExternalServices\ExternalService
+    snc.notificaciones.class: ApiV1Bundle\ExternalServices\NotificationsExternalService
+    snt.integration.turnos.class: ApiV1Bundle\ExternalServices\TurnosIntegration
+    snt.security.integration.class: ApiV1Bundle\ExternalServices\SecurityIntegration
+    snc.integration.carteleras.class: ApiV1Bundle\ExternalServices\CarteleraIntegration
+    
+    ## Mocks
+    snt.services.integration.mock.class: ApiV1Bundle\Mocks\SNTExternalServiceMock
+    
+services:
+    
+    ### MOCKS ###
+    
+    snt.services.integration.mock:
+        class: '%snt.services.integration.mock.class%'
+        arguments: ['@service_container']
+        
+    ### EXTERNAL SERVICES ####
+
+    snc.services.notificaciones:
+        class: '%snc.notificaciones.class%'
+        arguments: ['@service_container']
+    
+    snt.services.integration:
+        class: '%snt.services.integration.class%'
+        arguments: ['@service_container']
+
+    snt.services.integration.turnos:
+        class: '%snt.integration.turnos.class%'
+        arguments: ['@service_container', '@snt.services.integration', '@snt.services.integration.mock']
+
+    snc.services.integration.carteleras:
+            class: '%snc.integration.carteleras.class%'
+            arguments: ['@service_container', '@snt.services.integration', '@snt.services.integration.mock']
+    
+    ## SECURITY ##
+    
+    snc.security.builder:
+        class: '%snc.security.builder.class%'
+    
+    snc.security.parser:
+        class: '%snc.security.parser.class%'
+        
+    snc.security.validation:
+        class: '%snc.security.validation.class%'
+    
+    snc.helper.jwtoken:
+        class: '%snc.helper.jwtoken.class%'
+        arguments: ['@service_container', '%secret%', '@snc.security.builder', '@snc.security.parser', '@snc.security.validation']
+    
+    snc.validator.communication:
+        class: '%snc.validator.communication.class%'
+        arguments: ['@service_container']
+    
+    snt.security.integration:
+        class: '%snc.security.integration.class%'
+        arguments: ['@service_container', '@snt.services.integration', '@snt.services.integration.mock', '@snc.validator.communication']
+
+    ## REPOSITORIES ##
+
+    snc.repository.user:
+        class: '%snc.repository.user.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\User
+
+    snc.repository.agente:
+        class: '%snc.repository.agente.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Agente
+
+    snc.repository.responsable:
+        class: '%snc.repository.responsable.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Responsable
+
+    snc.repository.admin:
+        class: '%snc.repository.admin.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Admin
+
+    snc.repository.ventanilla:
+        class: '%snc.repository.ventanilla.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Ventanilla
+
+    snc.repository.cola:
+        class: '%snc.repository.cola.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Cola
+
+    snc.repository.usuario:
+        class: '%snc.repository.usuario.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Usuario
+
+    snc.repository.puntoatencion:
+        class: '%snc.repository.puntoatencion.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\PuntoAtencion
+
+    snc.repository.turno:
+        class: '%snc.repository.turno.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Turno
+
+    snc.repository.token:
+        class: '%snc.repository.token.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Token
+
+    snc.repository.cartelera:
+        class: '%snc.repository.cartelera.class%'
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+            - ApiV1Bundle\Entity\Cartelera
+        
+    ### SERVICES ###
+
+    snc.services.general:
+        class: '%snc.services.general.class%'
+        arguments: ['@service_container']
+    
+    snc.services.security:
+        class: '%snc.services.security.class%'
+        arguments: ['@service_container', '@snc.repository.user', '@snc.repository.token', '@snc.helper.jwtoken', '@snc.validator.user', '@snc.repository.usuario', '@snc.services.agente', '@snt.security.integration', '@snc.validator.communication', '@snc.validator.token', '@snc.repository.agente', '@snc.repository.admin', '@snc.repository.responsable']
+
+    snc.services.agente:
+        class: '%snc.services.agente.class%'
+        arguments: ['@service_container', '@snc.repository.agente', '@snc.validator.agente', '@snc.repository.usuario', '@snc.validator.user', '@snc.repository.ventanilla', '@snc.repository.puntoatencion', '@snc.services.roles', '@snc.validator.ventanilla']
+
+    snc.services.ventanilla:
+        class: '%snc.services.ventanilla.class%'
+        arguments: ['@service_container', '@snc.repository.ventanilla', '@snc.validator.ventanilla', '@snc.repository.cola', '@snc.repository.puntoatencion','@snc.repository.agente']
+
+    snc.services.usuario:
+        class: '%snc.services.usuario.class%'
+        arguments: ['@service_container', '@security.password_encoder', '@snc.validator.user', '@snc.validator.admin', '@snc.validator.responsable', '@snc.validator.agente', '@snc.repository.agente', '@snc.repository.admin', '@snc.repository.responsable', '@snc.repository.user', '@snc.repository.ventanilla', '@snc.repository.puntoatencion', '@snc.repository.usuario', '@snc.services.notificaciones', '@snc.services.security', '@snc.repository.token']
+
+    snc.services.cola:
+        class: '%snc.services.cola.class%'
+        arguments: ['@service_container', '@snc.validator.cola', '@snc.repository.cola', '@snc.repository.puntoatencion', '@snc.validator.communication', '@snc.services.redis']
+
+    snc.services.puntoatencion:
+        class: '%snc.services.puntoatencion.class%'
+        arguments: ['@service_container', '@snc.repository.puntoatencion', '@snc.validator.puntoatencion', '@snc.validator.communication']
+
+    snc.services.turno:
+        class: '%snc.services.turno.class%'
+        arguments: ['@service_container', '@snc.repository.turno', '@snc.validator.turno', '@snc.repository.puntoatencion', '@snc.repository.cola', '@snc.services.redis', '@snt.services.integration.turnos', '@snc.repository.ventanilla', '@snc.repository.agente', '@snc.services.roles', '@snc.repository.cartelera', '@snc.services.integration.carteleras']
+
+    snc.services.redis:
+        class: '%snc.services.redis.class%'
+        arguments: ['@service_container']
+
+    snc.services.roles:
+        class: '%snc.services.roles.class%'
+        arguments: ['@snc.validator.token', '@snc.repository.usuario', '@snc.helper.jwtoken', '@snc.repository.puntoatencion']
+
+    snc.services.cartelera:
+        class: '%snc.services.cartelera.class%'
+        arguments: ['@service_container', '@snc.repository.puntoatencion', '@snc.repository.cola', '@snc.repository.cartelera', '@snc.validator.cartelera', '@snc.services.roles']
+
+    ## VALIDATORS ##
+
+    snc.validator.agente:
+        class: '%snc.validator.agente.class%'
+        arguments: ['@snc.repository.ventanilla']
+
+    snc.validator.ventanilla:
+        class: '%snc.validator.ventanilla.class%'
+        arguments: ['@snc.repository.cola']
+    
+    snc.validator.admin:
+        class : '%snc.validator.admin.class%'
+        
+    snc.validator.responsable:
+        class: '%snc.validator.responsable.class%'
+        arguments: ['@snc.repository.user']
+        
+    snc.validator.user:
+       class: '%snc.validator.user.class%'
+       arguments: ['@snc.repository.user', '@snc.repository.ventanilla', '@security.password_encoder']
+
+    snc.validator.cola:
+       class: '%snc.validator.cola.class%'
+       arguments: ['@snc.services.redis']
+
+    snc.validator.turno:
+       class: '%snc.validator.turno.class%'
+       
+    snc.validator.puntoatencion:
+       class: '%snc.validator.puntoatencion.class%'
+       arguments: ['@snc.repository.puntoatencion']
+
+    snc.validator.token:
+        class: '%snc.validator.token.class%'
+        arguments: ['@snc.repository.user', '@snc.repository.token', '@snc.helper.jwtoken']
+    snc.validator.cartelera:
+        class: '%snc.validator.cartelera.class%'
+        arguments: ['@snc.repository.cola']

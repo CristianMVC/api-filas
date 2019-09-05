@@ -1,0 +1,20 @@
+# api specific parameters
+parameters:
+    integration:
+        host:
+            snt: '%snt_api_integration%'
+            nodejs: '%nodejs_url%'
+        api_id:
+            snt: 60747c620c56dddd926c2f0328fa760e
+            snc: 6ab8946c9ec922ecba89385033689e94
+        keys:
+            snt: '%snt_signature_key%'
+            snc: '%snc_signature_key%'
+        urls:
+            snt:
+                test : '/integration/secure/response'
+                turnos: '/integracion/turnos'
+                turnos.fecha: '/integracion/turnos/fecha'
+                turnos.buscar: '/integracion/turnos/buscar'
+            nodejs:
+                turnos.enviar: '/proximoTurno'

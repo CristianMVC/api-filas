@@ -1,0 +1,44 @@
+# This file is auto-generated during the composer install
+parameters:
+    # database prod
+    database_driver: pdo_mysql
+    database_host: hxv-sntdb.hexacta.com
+    database_port: 3306
+    database_name: snc_uat
+    database_user: root
+    database_password: asdf1234
+    # database testing
+    database_testing_driver: pdo_mysql
+    database_testing_host: hxv-sntdb.hexacta.com
+    database_testing_port: 3306
+    database_testing_name: snc_unit_back
+    database_testing_user: root
+    database_testing_password: asdf1234
+    # database redis
+    redis_host: 'redis://hxv-sntdb.hexacta.com/3'
+    redis_testing_host: 'redis://hxv-sntdb.hexacta.com/4'
+    # mailer
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    # security
+    secret: 37f9f4e165b033fb76cc2320838321cc57140e65
+    jwt_key_pass_phrase: 0f95db775183b6aa49b016c2b22b600e
+    snt_signature_key: XHiH7I7wV502uLxM9xrpii4XluB4wiuz
+    snc_signature_key: ZuCA2UsrUHH0uJj156gwvQ37K43dOGsH
+    # integration
+    snt_api_integration: 'http://sntapi.hexacta.com:8008/api/v1.0'
+    # notifications
+    system_base_url: 'http://snc.hexacta.com:8008'
+    usuarios_url: 'http://snt-usuarios.hexacta.com:8008'
+    snc_api_notificaciones_url: 'https://notificaciones-qa.argentina.gob.ar/1.0'
+    snc_api_notificaciones_user: sistematurnos
+    snc_api_notificaciones_pass: '>Q!D`"9zB}f`L<[R'
+    snc_api_notificaciones_token: 595ad8b2a340d4a84a471953541be700cc503a73
+    snc_api_notificaciones_email: snt@hexacta.com
+    snc_api_notificaciones_subject: 'Sistema Nacional de Turnos'
+    # totem
+    totem_email: snt.totem@argentina.gob.ar
+    # NodeJS
+    nodejs_url: 'http://snc-cartelera.hexacta.com:4206'
